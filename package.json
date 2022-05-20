@@ -1,0 +1,21 @@
+{
+  "name": "soutils",
+  "version": "1.0.1",
+  "description": "SuperOffice Tool for communication",
+  "main": "./src/index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "DoWEB ApS",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.0.1",
+    "fs": "^0.0.1-security",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.3",
+    "path": "^0.12.7"
+  }
+}
