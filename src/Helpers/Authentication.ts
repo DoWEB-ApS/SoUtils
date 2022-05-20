@@ -1,20 +1,40 @@
 'use strict';
-import path from 'path';
-import {fileURLToPath} from 'url';
+import * as path from 'path';
+import {fileURLToPath, URLSearchParams} from 'url';
 
 const __filename = fileURLToPath(import.meta.url); 
 const __dirname = path.dirname(__filename);
 
  
-import dotenv from 'dotenv';
+import * as dotenv from 'dotenv';
 dotenv.config();
-import crypto from 'crypto';
-import moment from 'moment';
-import fs from 'fs'; 
+import * as crypto from 'crypto';
+import * as moment from 'moment';
+import * as fs from 'fs'; 
 import jwt from "jsonwebtoken"; 
 import axios from 'axios'; 
  
+enum bearerType {
+  personal,
+  system
+}
+
 export class Authentication {
+  public app_client : string;
+  public app_contextId : string;
+  public app_environment : string;
+  public app_redirect : string;
+  public app_secret : string;
+  public app_systemtoken : string;
+  public app_webapi_url : string;
+  public bearer : string;
+  public bearer_expiration : Number;
+  public bearer_type : bearerType;
+  public privKey : crypto.KeyLike;
+  public privKeyFile : fs.PathOrFileDescriptor;
+  public publicKEY : crypto.KeyLike;
+  public publKeyFile : fs.PathOrFileDescriptor;
+  public verifyOptions : Object;
  
 constructor(contextId = '', netserver_url = '', systemToken) {
   
@@ -38,15 +58,16 @@ constructor(contextId = '', netserver_url = '', systemToken) {
  
 }
 
-async getSoRefreshTicket(refresh_token) {
+async getSoRefreshTicket(refresh_token: string) {
   
-const params = new URLSearchParams({
-    'grant_type': 'refresh_token',
-    'client_id': this.app_client,
-    'client_secret': this.app_secret,
-    'refresh_token': refresh_token,
-    'redirect_url': this.app_redirect
-}).toString();
+const options : URLSearchParams = new URLSearchParams();
+options.append('grant_type', 'refresh_token');
+options.append('client_id', this.app_client);
+options.append('client_secret', this.app_secret);
+options.append('refresh_token', refresh_token);
+options.append('redirect_url', this.app_redirect);
+
+const params = new URLSearchParams(options).toString();
 
 //Set up axios to request refresh token
  
@@ -78,7 +99,7 @@ const params = new URLSearchParams({
     this.app_systemtoken = decoded['http://schemes.superoffice.net/identity/system_token'];
     this.bearer_expiration = decoded['exp'];
     this.bearer = response.data.access_token;
-    this.bearer_type = 'personal';
+    this.bearer_type = bearerType.personal;
     return true;
 }
 catch(ex){
@@ -101,8 +122,8 @@ async getSoSystemTicket () {
         let sign = crypto.createSign('SHA256');
         sign.update(data);
         sign.end();
-        sign = sign.sign(this.privKey, 'base64');
-        const signedToken = `${data}.${sign}`;
+        let signed : String = sign.sign(this.privKey, 'base64');
+        const signedToken = `${data}.${signed}`;
         const dataToSend = {
           "SignedSystemToken": signedToken,
           "ApplicationToken": this.app_secret,
@@ -134,7 +155,7 @@ async getSoSystemTicket () {
                   console.log("good to go!");
               } else {
                   console.log("NOT good to go!");
-                  reject();
+                  return false;
               }
               // validate the JWT and extract the claims
               var decoded = jwt.verify(token, this.publicKEY, this.verifyOptions);
@@ -146,7 +167,7 @@ async getSoSystemTicket () {
               this.app_systemtoken = decoded['http://schemes.superoffice.net/identity/system_token'];
               this.bearer_expiration = decoded['exp'];
               this.bearer = decoded["http://schemes.superoffice.net/identity/ticket"];
-              this.bearer_type = 'system';
+              this.bearer_type = bearerType.system;
               return true;
             } catch (err) {
               console.log('');
