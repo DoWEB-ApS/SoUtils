@@ -36,17 +36,14 @@ export class Authentication {
   public publKeyFile : fs.PathOrFileDescriptor;
   public verifyOptions : Object;
  
-constructor(contextId = '', netserver_url = '', systemToken) {
+constructor() {
   
   this.app_secret = process.env.SUPEROFFICE_CLIENTSECRET;
   this.app_client = process.env.SUPEROFFICE_CLIENTID;
   this.app_redirect = process.env.SUPEROFFICE_REDIRECT;
-  this.app_environment= process.env.SUPEROFFICE_ENV;
-  this.app_contextId = contextId;
-  this.app_webapi_url = netserver_url;
+  this.app_environment= process.env.SUPEROFFICE_ENV; 
   this.bearer = '';
-  this.bearer_expiration = 
-  this.app_systemtoken = systemToken; 
+  this.bearer_expiration = 0
   this.privKeyFile = process.env.SUPEROFFICE_PRIVKEY_FILE;
   this.publKeyFile = path.join(__dirname, '..//certs/' + this.app_environment + '/', 'federatedcert.pem');
   this.verifyOptions = {
@@ -114,7 +111,10 @@ catch(ex){
 }
 
 async getSoSystemTicket () { 
- 
+        if(this.app_systemtoken === ''){
+          console.error('No systemtoken present!');
+          return false;
+        }
         const utcTimestamp = moment.utc().format('YYYYMMDDHHmm');
         const data = `${this.app_systemtoken}.${utcTimestamp}`;
         console.log('');

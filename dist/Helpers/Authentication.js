@@ -52,18 +52,13 @@ var bearerType;
     bearerType[bearerType["system"] = 1] = "system";
 })(bearerType || (bearerType = {}));
 var Authentication = /** @class */ (function () {
-    function Authentication(contextId, netserver_url, systemToken) {
-        if (contextId === void 0) { contextId = ''; }
-        if (netserver_url === void 0) { netserver_url = ''; }
+    function Authentication() {
         this.app_secret = process.env.SUPEROFFICE_CLIENTSECRET;
         this.app_client = process.env.SUPEROFFICE_CLIENTID;
         this.app_redirect = process.env.SUPEROFFICE_REDIRECT;
         this.app_environment = process.env.SUPEROFFICE_ENV;
-        this.app_contextId = contextId;
-        this.app_webapi_url = netserver_url;
         this.bearer = '';
-        this.bearer_expiration =
-            this.app_systemtoken = systemToken;
+        this.bearer_expiration = 0;
         this.privKeyFile = process.env.SUPEROFFICE_PRIVKEY_FILE;
         this.publKeyFile = path.join(__dirname, '..//certs/' + this.app_environment + '/', 'federatedcert.pem');
         this.verifyOptions = {
@@ -138,6 +133,10 @@ var Authentication = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
+                        if (this.app_systemtoken === '') {
+                            console.error('No systemtoken present!');
+                            return [2 /*return*/, false];
+                        }
                         utcTimestamp = moment.utc().format('YYYYMMDDHHmm');
                         data = "".concat(this.app_systemtoken, ".").concat(utcTimestamp);
                         console.log('');
