@@ -107,9 +107,11 @@ var Authentication = /** @class */ (function () {
                             }
                             decoded = jwt.verify(token, this.publicKEY, this.verifyOptions);
                             console.log(decoded);
+                            this.app_name = decoded['http://schemes.superoffice.net/identity/company_name'];
                             this.app_contextId = decoded['http://schemes.superoffice.net/identity/ctx'];
                             this.app_webapi_url = decoded['http://schemes.superoffice.net/identity/webapi_url'];
                             this.app_systemtoken = decoded['http://schemes.superoffice.net/identity/system_token'];
+                            this.app_is_admin = (decoded['http://schemes.superoffice.net/identity/is_administrator'] === 'True');
                             this.bearer_expiration = decoded['exp'];
                             this.bearer = response.data.access_token;
                             this.bearer_type = bearerType.personal;
@@ -184,6 +186,7 @@ var Authentication = /** @class */ (function () {
                                 // write out the ticket to the console, DONE!
                                 console.log('');
                                 console.log('System User Ticket: ' + decoded["http://schemes.superoffice.net/identity/ticket"]);
+                                this.app_name = decoded['http://schemes.superoffice.net/identity/company_name'];
                                 this.app_contextId = decoded['http://schemes.superoffice.net/identity/ctx'];
                                 this.app_webapi_url = decoded['http://schemes.superoffice.net/identity/webapi_url'];
                                 this.app_systemtoken = decoded['http://schemes.superoffice.net/identity/system_token'];

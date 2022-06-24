@@ -21,12 +21,14 @@ enum bearerType {
 
 export class Authentication {
   public app_client : string;
+  public app_name : string;
   public app_contextId : string;
   public app_environment : string;
   public app_redirect : string;
   public app_secret : string;
   public app_systemtoken : string;
   public app_webapi_url : string;
+  public app_is_admin: boolean;
   public bearer : string;
   public bearer_expiration : Number;
   public bearer_type : bearerType;
@@ -91,9 +93,11 @@ const params = new URLSearchParams(options).toString();
     // validate the JWT and extract the claims
     var decoded = jwt.verify(token, this.publicKEY, this.verifyOptions);
     console.log(decoded);
+    this.app_name = decoded['http://schemes.superoffice.net/identity/company_name'];
     this.app_contextId = decoded['http://schemes.superoffice.net/identity/ctx'];
     this.app_webapi_url =  decoded['http://schemes.superoffice.net/identity/webapi_url'];
     this.app_systemtoken = decoded['http://schemes.superoffice.net/identity/system_token'];
+    this.app_is_admin = (decoded['http://schemes.superoffice.net/identity/is_administrator'] === 'True');
     this.bearer_expiration = decoded['exp'];
     this.bearer = response.data.access_token;
     this.bearer_type = bearerType.personal;
@@ -162,6 +166,7 @@ async getSoSystemTicket () {
               // write out the ticket to the console, DONE!
               console.log('');
               console.log('System User Ticket: ' + decoded["http://schemes.superoffice.net/identity/ticket"]);
+              this.app_name = decoded['http://schemes.superoffice.net/identity/company_name'];
               this.app_contextId = decoded['http://schemes.superoffice.net/identity/ctx'];
               this.app_webapi_url =  decoded['http://schemes.superoffice.net/identity/webapi_url'];
               this.app_systemtoken = decoded['http://schemes.superoffice.net/identity/system_token'];

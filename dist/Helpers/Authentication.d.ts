@@ -7,12 +7,14 @@ declare enum bearerType {
 }
 export declare class Authentication {
     app_client: string;
+    app_name: string;
     app_contextId: string;
     app_environment: string;
     app_redirect: string;
     app_secret: string;
     app_systemtoken: string;
     app_webapi_url: string;
+    app_is_admin: boolean;
     bearer: string;
     bearer_expiration: Number;
     bearer_type: bearerType;
