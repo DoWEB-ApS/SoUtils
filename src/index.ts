@@ -1,3 +1,3 @@
-import {Authentication as soAuthentication} from "./Helpers/Authentication.js"; 
+import {Authentication as soAuthentication, bearerType} from "./Helpers/Authentication.js"; 
 import {soClient} from "./Helpers/soClient.js";
-export {soAuthentication, soClient};
+export {soAuthentication, soClient, bearerType};

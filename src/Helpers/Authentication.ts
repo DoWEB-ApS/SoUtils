@@ -15,8 +15,8 @@ import jwt from "jsonwebtoken";
 import axios from 'axios'; 
  
 export enum bearerType {
-  personal,
-  system
+  PERSONAL = 1,
+  SYSTEM = 2
 }
 
 export class Authentication {
@@ -29,6 +29,8 @@ export class Authentication {
   public app_systemtoken : string;
   public app_webapi_url : string;
   public app_is_admin: boolean;
+  public app_language: string;
+  public app_refresh: string;
   public bearer : string;
   public bearer_expiration : Number;
   public bearer_type : bearerType;
@@ -44,6 +46,7 @@ constructor() {
   this.app_client = process.env.SUPEROFFICE_CLIENTID;
   this.app_redirect = process.env.SUPEROFFICE_REDIRECT;
   this.app_environment= process.env.SUPEROFFICE_ENV; 
+  this.app_language = process.env.SUPEROFFICE_LANG;
   this.bearer = '';
   this.bearer_expiration = 0
   this.privKeyFile = process.env.SUPEROFFICE_PRIVKEY_FILE;
@@ -97,10 +100,11 @@ const params = new URLSearchParams(options).toString();
     this.app_contextId = decoded['http://schemes.superoffice.net/identity/ctx'];
     this.app_webapi_url =  decoded['http://schemes.superoffice.net/identity/webapi_url'];
     this.app_systemtoken = decoded['http://schemes.superoffice.net/identity/system_token'];
+    this.app_refresh = refresh_token;
     this.app_is_admin = (decoded['http://schemes.superoffice.net/identity/is_administrator'] === 'True');
     this.bearer_expiration = decoded['exp'];
     this.bearer = response.data.access_token;
-    this.bearer_type = bearerType.personal;
+    this.bearer_type = bearerType.PERSONAL;
     return true;
 }
 catch(ex){
@@ -172,7 +176,7 @@ async getSoSystemTicket () {
               this.app_systemtoken = decoded['http://schemes.superoffice.net/identity/system_token'];
               this.bearer_expiration = decoded['exp'];
               this.bearer = decoded["http://schemes.superoffice.net/identity/ticket"];
-              this.bearer_type = bearerType.system;
+              this.bearer_type = bearerType.SYSTEM;
               return true;
             } catch (err) {
               console.log('');

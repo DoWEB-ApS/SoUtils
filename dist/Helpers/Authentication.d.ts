@@ -1,9 +1,9 @@
 /// <reference types="node" />
 import * as crypto from 'crypto';
 import * as fs from 'fs';
-declare enum bearerType {
-    personal = 0,
-    system = 1
+export declare enum bearerType {
+    PERSONAL = 1,
+    SYSTEM = 2
 }
 export declare class Authentication {
     app_client: string;
@@ -15,6 +15,8 @@ export declare class Authentication {
     app_systemtoken: string;
     app_webapi_url: string;
     app_is_admin: boolean;
+    app_language: string;
+    app_refresh: string;
     bearer: string;
     bearer_expiration: Number;
     bearer_type: bearerType;
@@ -30,4 +32,3 @@ export declare class Authentication {
         Exception: any;
     }>;
 }
-export {};
