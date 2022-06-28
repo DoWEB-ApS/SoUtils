@@ -14,7 +14,7 @@ import * as fs from 'fs';
 import jwt from "jsonwebtoken"; 
 import axios from 'axios'; 
  
-enum bearerType {
+export enum bearerType {
   personal,
   system
 }
