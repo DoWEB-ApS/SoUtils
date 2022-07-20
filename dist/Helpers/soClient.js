@@ -13,11 +13,17 @@ export class soClient {
             const response = await axios({
                 method: "GET",
                 url: this.Authentication.app_webapi_url + "v1/" + route + "?" + getparams,
-                headers: {
-                    "content-type": "application/json",
-                    Authorization: "Bearer " + this.Authentication.bearer,
-                    "SO-Language": this.Authentication.app_language,
-                },
+                headers: this.Authentication.bearer_type === bearerType.SYSTEM
+                    ? {
+                        Authorization: "SOTicket " + this.Authentication.bearer,
+                        "SO-AppToken": this.Authentication.app_secret,
+                        "SO-Language": this.Authentication.app_language,
+                    }
+                    : {
+                        "content-type": "application/json",
+                        Authorization: "Bearer " + this.Authentication.bearer,
+                        "SO-Language": this.Authentication.app_language,
+                    },
             });
             console.log(response.data);
             return response.data;
@@ -48,11 +54,17 @@ export class soClient {
                 method: "POST",
                 url: this.Authentication.app_webapi_url + "v1/" + route + "?" + getparams,
                 data: data,
-                headers: {
-                    "content-type": "application/json",
-                    Authorization: "Bearer " + this.Authentication.bearer,
-                    "SO-Language": this.Authentication.app_language,
-                },
+                headers: this.Authentication.bearer_type === bearerType.SYSTEM
+                    ? {
+                        Authorization: "SOTicket " + this.Authentication.bearer,
+                        "SO-AppToken": this.Authentication.app_secret,
+                        "SO-Language": this.Authentication.app_language,
+                    }
+                    : {
+                        "content-type": "application/json",
+                        Authorization: "Bearer " + this.Authentication.bearer,
+                        "SO-Language": this.Authentication.app_language,
+                    },
             });
             console.log(response.data);
             return response.data;
@@ -83,11 +95,17 @@ export class soClient {
                 method: "PUT",
                 url: this.Authentication.app_webapi_url + "v1/" + route + "?" + getparams,
                 data: data,
-                headers: {
-                    "content-type": "application/json",
-                    Authorization: "Bearer " + this.Authentication.bearer,
-                    "SO-Language": this.Authentication.app_language,
-                },
+                headers: this.Authentication.bearer_type === bearerType.SYSTEM
+                    ? {
+                        Authorization: "SOTicket " + this.Authentication.bearer,
+                        "SO-AppToken": this.Authentication.app_secret,
+                        "SO-Language": this.Authentication.app_language,
+                    }
+                    : {
+                        "content-type": "application/json",
+                        Authorization: "Bearer " + this.Authentication.bearer,
+                        "SO-Language": this.Authentication.app_language,
+                    },
             });
             console.log(response.data);
             return response.data;
@@ -117,11 +135,17 @@ export class soClient {
             const response = await axios({
                 method: "DELETE",
                 url: this.Authentication.app_webapi_url + "v1/" + route + "?" + getparams,
-                headers: {
-                    "content-type": "application/json",
-                    Authorization: "Bearer " + this.Authentication.bearer,
-                    "SO-Language": this.Authentication.app_language,
-                },
+                headers: this.Authentication.bearer_type === bearerType.SYSTEM
+                    ? {
+                        Authorization: "SOTicket " + this.Authentication.bearer,
+                        "SO-AppToken": this.Authentication.app_secret,
+                        "SO-Language": this.Authentication.app_language,
+                    }
+                    : {
+                        "content-type": "application/json",
+                        Authorization: "Bearer " + this.Authentication.bearer,
+                        "SO-Language": this.Authentication.app_language,
+                    },
             });
             console.log(response.data);
             return response.data;

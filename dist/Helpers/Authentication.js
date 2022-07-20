@@ -6,7 +6,6 @@ const __dirname = path.dirname(__filename);
 import * as dotenv from 'dotenv';
 dotenv.config();
 import * as crypto from 'crypto';
-import * as moment from 'moment';
 import * as fs from 'fs';
 import jwt from "jsonwebtoken";
 import axios from 'axios';
@@ -108,7 +107,12 @@ export class Authentication {
             console.error('No systemtoken present!');
             return false;
         }
-        const utcTimestamp = moment.utc().format('YYYYMMDDHHmm');
+        // get UTC time
+        const now = new Date();
+        const utc_now = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
+        //Format the UTC time to YYYYMMDDHHmm
+        //const utc_now_str = utc_now.toISOString().replace(/T/, ' ').replace(/\..+/, '').replaceAll('-', '').replaceAll(':', '').replace(' ', '').substring(0,12);
+        const utcTimestamp = now.getUTCFullYear() + ('0' + (now.getUTCMonth() + 1)).slice(-2) + ('0' + now.getUTCDate()).slice(-2) + ('0' + now.getUTCHours()).slice(-2) + ('0' + now.getUTCMinutes()).slice(-2);
         const data = `${this.app_systemtoken}.${utcTimestamp}`;
         console.log('');
         console.log('Token.Time: ' + data);
@@ -156,7 +160,6 @@ export class Authentication {
                     this.app_name = decoded['http://schemes.superoffice.net/identity/company_name'];
                     this.app_contextId = decoded['http://schemes.superoffice.net/identity/ctx'];
                     this.app_webapi_url = decoded['http://schemes.superoffice.net/identity/webapi_url'];
-                    this.app_systemtoken = decoded['http://schemes.superoffice.net/identity/system_token'];
                     this.bearer_expiration = decoded['exp'];
                     this.bearer = decoded["http://schemes.superoffice.net/identity/ticket"];
                     this.bearer_type = bearerType.SYSTEM;
