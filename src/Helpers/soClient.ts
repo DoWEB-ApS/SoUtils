@@ -12,6 +12,9 @@ export class soClient {
     //Set up axios to request refresh token
 
     try {
+      if(this.Authentication.bearer_expiration < new Date()){
+        throw {response: {status: 401, msg: 'Bearer token expired'}};
+      }
       const response = await axios({
         method: "GET", //you can set what request you want to be
         url:
@@ -54,9 +57,13 @@ export class soClient {
     }
   }
   async post(route, data, params = {}, tries = 0) {
+    
     const getparams = new URLSearchParams(params).toString();
     //Set up axios to request refresh token
     try {
+      if(this.Authentication.bearer_expiration < new Date()){
+        throw {response: {status: 401, msg: 'Bearer token expired'}};
+      }
       const response = await axios({
         method: "POST", //you can set what request you want to be
         url:
@@ -105,6 +112,9 @@ export class soClient {
     //Set up axios to request refresh token
 
     try {
+      if(this.Authentication.bearer_expiration < new Date()){
+        throw {response: {status: 401, msg: 'Bearer token expired'}};
+      }
       const response = await axios({
         method: "PUT", //you can set what request you want to be
         url:
@@ -154,6 +164,9 @@ export class soClient {
     //Set up axios to request refresh token
 
     try {
+      if(this.Authentication.bearer_expiration < new Date()){
+        throw {response: {status: 401, msg: 'Bearer token expired'}};
+      }
       const response = await axios({
         method: "DELETE", //you can set what request you want to be
         url:

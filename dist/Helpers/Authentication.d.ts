@@ -18,7 +18,7 @@ export declare class Authentication {
     app_language: string;
     app_refresh: string;
     bearer: string;
-    bearer_expiration: Number;
+    bearer_expiration: Date;
     bearer_type: bearerType;
     privKey: crypto.KeyLike;
     privKeyFile: fs.PathOrFileDescriptor;

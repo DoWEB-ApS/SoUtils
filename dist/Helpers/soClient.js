@@ -10,6 +10,9 @@ export class soClient {
         const getparams = new URLSearchParams(params).toString();
         //Set up axios to request refresh token
         try {
+            if (this.Authentication.bearer_expiration < new Date()) {
+                throw { response: { status: 401, msg: 'Bearer token expired' } };
+            }
             const response = await axios({
                 method: "GET",
                 url: this.Authentication.app_webapi_url + "v1/" + route + "?" + getparams,
@@ -50,6 +53,9 @@ export class soClient {
         const getparams = new URLSearchParams(params).toString();
         //Set up axios to request refresh token
         try {
+            if (this.Authentication.bearer_expiration < new Date()) {
+                throw { response: { status: 401, msg: 'Bearer token expired' } };
+            }
             const response = await axios({
                 method: "POST",
                 url: this.Authentication.app_webapi_url + "v1/" + route + "?" + getparams,
@@ -91,6 +97,9 @@ export class soClient {
         const getparams = new URLSearchParams(params).toString();
         //Set up axios to request refresh token
         try {
+            if (this.Authentication.bearer_expiration < new Date()) {
+                throw { response: { status: 401, msg: 'Bearer token expired' } };
+            }
             const response = await axios({
                 method: "PUT",
                 url: this.Authentication.app_webapi_url + "v1/" + route + "?" + getparams,
@@ -132,6 +141,9 @@ export class soClient {
         const getparams = new URLSearchParams(params).toString();
         //Set up axios to request refresh token
         try {
+            if (this.Authentication.bearer_expiration < new Date()) {
+                throw { response: { status: 401, msg: 'Bearer token expired' } };
+            }
             const response = await axios({
                 method: "DELETE",
                 url: this.Authentication.app_webapi_url + "v1/" + route + "?" + getparams,

@@ -31,7 +31,7 @@ export class Authentication {
   public app_language: string;
   public app_refresh: string;
   public bearer : string;
-  public bearer_expiration : Number;
+  public bearer_expiration : Date;
   public bearer_type : bearerType;
   public privKey : crypto.KeyLike;
   public privKeyFile : fs.PathOrFileDescriptor;
@@ -47,7 +47,7 @@ constructor() {
   this.app_environment= process.env.SUPEROFFICE_ENV; 
   this.app_language = process.env.SUPEROFFICE_LANG;
   this.bearer = '';
-  this.bearer_expiration = 0
+  this.bearer_expiration = new Date();
   this.privKeyFile = process.env.SUPEROFFICE_PRIVKEY_FILE;
   this.publKeyFile = path.join(__dirname, '..//certs/' + this.app_environment + '/', 'federatedcert.pem');
   this.verifyOptions = {
@@ -101,7 +101,7 @@ const params = new URLSearchParams(options).toString();
     this.app_systemtoken = decoded['http://schemes.superoffice.net/identity/system_token'];
     this.app_refresh = refresh_token;
     this.app_is_admin = (decoded['http://schemes.superoffice.net/identity/is_administrator'] === 'True');
-    this.bearer_expiration = decoded['exp'];
+    this.bearer_expiration = new Date(parseInt(decoded['exp']) * 1000);
     this.bearer = response.data.access_token;
     this.bearer_type = bearerType.PERSONAL;
     return true;
@@ -177,7 +177,7 @@ async getSoSystemTicket () {
               this.app_name = decoded['http://schemes.superoffice.net/identity/company_name'];
               this.app_contextId = decoded['http://schemes.superoffice.net/identity/ctx'];
               this.app_webapi_url =  decoded['http://schemes.superoffice.net/identity/webapi_url'];
-              this.bearer_expiration = decoded['exp'];
+              this.bearer_expiration = new Date(parseInt(decoded['exp']) * 1000);
               this.bearer = decoded["http://schemes.superoffice.net/identity/ticket"];
               this.bearer_type = bearerType.SYSTEM;
               return true;
