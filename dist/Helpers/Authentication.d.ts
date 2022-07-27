@@ -1,6 +1,6 @@
 /// <reference types="node" />
-import * as crypto from 'crypto';
-import * as fs from 'fs';
+import * as crypto from "crypto";
+import * as fs from "fs";
 export declare enum bearerType {
     PERSONAL = 1,
     SYSTEM = 2
@@ -25,6 +25,7 @@ export declare class Authentication {
     publicKEY: crypto.KeyLike;
     publKeyFile: fs.PathOrFileDescriptor;
     verifyOptions: Object;
+    updateBearerCallback?: Function;
     constructor();
     getSoRefreshTicket(refresh_token: string): Promise<boolean>;
     getSoSystemTicket(): Promise<boolean | {

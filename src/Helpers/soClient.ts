@@ -43,14 +43,16 @@ export class soClient {
         await this.Authentication.getSoRefreshTicket(
           this.Authentication.app_refresh
         );
-        await this.get(route, params, tries + 1);
+        const tryAgain = await this.get(route, params, tries + 1);
+        return tryAgain;
       } else if (
         error.response.status === 401 &&
         this.Authentication.bearer_type === bearerType.SYSTEM &&
         tries < 3
       ) {
         await this.Authentication.getSoSystemTicket();
-        await this.get(route, params, tries + 1);
+        const tryAgain = await this.get(route, params, tries + 1);
+        return tryAgain;
       } else {
         throw error;
       }
@@ -93,14 +95,16 @@ export class soClient {
         await this.Authentication.getSoRefreshTicket(
           this.Authentication.app_refresh
         );
-        await this.post(route, data, params, tries + 1);
+        const tryAgain = await this.post(route, data, params, tries + 1);
+        return tryAgain;
       } else if (
         error.response.status === 401 &&
         this.Authentication.bearer_type === bearerType.SYSTEM &&
         tries < 3
       ) {
         await this.Authentication.getSoSystemTicket();
-        await this.post(route, data, params, tries + 1);
+        const tryAgain = await this.post(route, data, params, tries + 1);
+        return tryAgain;
       } else {
         throw error;
       }
@@ -144,14 +148,16 @@ export class soClient {
         await this.Authentication.getSoRefreshTicket(
           this.Authentication.app_refresh
         );
-        this.put(route, data, params, tries + 1);
+        const tryAgain = await this.put(route, data, params, tries + 1);
+        return tryAgain;
       } else if (
         error.response.status === 401 &&
         this.Authentication.bearer_type === bearerType.SYSTEM &&
         tries < 3
       ) {
         await this.Authentication.getSoSystemTicket();
-        await this.put(route, data, params, tries + 1);
+        const tryAgain = await this.put(route, data, params, tries + 1);
+        return tryAgain;
       } else {
         throw error;
       }
@@ -195,14 +201,16 @@ export class soClient {
         await this.Authentication.getSoRefreshTicket(
           this.Authentication.app_refresh
         );
-        await this.delete(route, params, tries + 1);
+        const tryAgain = await this.delete(route, params, tries + 1);
+        return tryAgain;
       } else if (
         error.response.status === 401 &&
         this.Authentication.bearer_type === bearerType.SYSTEM &&
         tries < 3
       ) {
         await this.Authentication.getSoSystemTicket();
-        await this.delete(route, params, tries + 1);
+        const tryAgain = await this.delete(route, params, tries + 1);
+        return tryAgain;
       } else {
         throw error;
       }
