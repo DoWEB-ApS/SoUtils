@@ -5,7 +5,7 @@ import { URLSearchParams } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 */
-const __dirname = require.resolve('soutils');
+const __dirname = process.cwd();
 import * as dotenv from "dotenv";
 dotenv.config();
 import * as crypto from "crypto";
@@ -47,7 +47,7 @@ export class Authentication {
         this.bearer = "";
         this.bearer_expiration = new Date();
         this.privKeyFile = process.env.SUPEROFFICE_PRIVKEY_FILE;
-        this.publKeyFile = path.join(__dirname, "..//certs/" + this.app_environment + "/", "federatedcert.pem");
+        this.publKeyFile = path.join(__dirname, "node_modules", "soutils", "dist", "certs", this.app_environment, "federatedcert.pem");
         this.verifyOptions = {
             ignoreExpiration: true,
             algorithm: ["RS256"],
