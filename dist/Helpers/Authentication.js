@@ -5,7 +5,7 @@ import { URLSearchParams } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 */
-const __dirname = process.cwd();
+const __dirname = require.resolve('soutils');
 import * as dotenv from "dotenv";
 dotenv.config();
 import * as crypto from "crypto";
