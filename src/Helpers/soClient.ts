@@ -1,6 +1,6 @@
 "use strict";
 import axios from "axios";
-import { Authentication, bearerType } from "./Authentication";
+import { Authentication, bearerType } from "./Authentication.js";
 export class soClient {
   private Authentication: Authentication;
   constructor(Authentication: Authentication) {
