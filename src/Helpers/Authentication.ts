@@ -53,7 +53,11 @@ export class Authentication {
     this.privKeyFile = process.env.SUPEROFFICE_PRIVKEY_FILE;
     this.publKeyFile = path.join(
       __dirname,
-      "..//certs/" + this.app_environment + "/",
+      "node_modules",
+      "soutils",
+      "dist",
+      "certs",
+      this.app_environment,
       "federatedcert.pem"
     );
     this.verifyOptions = {
